@@ -24,10 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('biens', BienController::class);
 Route::post('/biens', [BienController::class, 'store']);
 Route::put('/biens/{id}', [BienController::class, 'update']);
-<<<<<<< HEAD
 Route::delete('/biens/{id}', [BienController::class, 'destroy']);
-=======
->>>>>>> 7a929f142c0fa72b7766e2ace77cb68096b6e904
 
 //User
 Route::post('utilisateur/{id}/bloquer', [UserController::class, 'bloquer']);

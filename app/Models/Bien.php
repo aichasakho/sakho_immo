@@ -9,7 +9,7 @@ class Bien extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['titre', 'description', 'prix', 'disponible'];
+    protected $fillable = ['titre', 'description', 'prix', 'disponible','imagePath'];
 
     public function reservations()
     {
