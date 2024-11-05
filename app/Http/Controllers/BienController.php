@@ -21,25 +21,40 @@ class BienController extends Controller
             'prix' => 'required|numeric',
             'disponible' => 'boolean',
             'type' => 'required|string|in:appartement,studio,magasin,terrain,maison',
+<<<<<<< HEAD
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
         ]);
 
         $data = $request->only('titre', 'description', 'prix', 'disponible', 'type');
 
+=======
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Exemple de validation
+        ]);
+
+>>>>>>> 7a929f142c0fa72b7766e2ace77cb68096b6e904
         // Traitement de l'image
         if ($request->hasFile('image')) {
             $data['imagePath'] = $request->file('image')->store('images', 'public');
         }
 
         // Créer le bien
+<<<<<<< HEAD
         $bien = Bien::create($data);
         return response()->json($bien, 201);
     }
 
+=======
+        Bien::create($data);
+        return response()->json($data, 201);
+    }
+
+
+>>>>>>> 7a929f142c0fa72b7766e2ace77cb68096b6e904
     public function show(Bien $bien) {
         return $bien;
     }
 
+<<<<<<< HEAD
     public function update(Request $request, $id)
     {
         $bien = Bien::find($id);
@@ -74,4 +89,27 @@ class BienController extends Controller
             return response()->json(['message' => 'Bien non trouvé'], 404);
         }
     }
+=======
+    public function update(Request $request, Bien $bien)
+    {
+        $request->validate([
+            'titre' => 'sometimes|required|string|max:255',
+            'description' => 'sometimes|required|string',
+            'prix' => 'sometimes|required|numeric',
+            'disponible' => 'sometimes|boolean',
+            'type' => 'sometimes|required|string|in:appartement,studio,magasin,terrain,maison',
+            'image' => 'nullable|image|max:2048', // Validation pour l'image
+        ]);
+
+        $bien->update($request->all());
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('images', 'public');
+            $bien->imagePath = $path; // Enregistrer le chemin de l'image
+            $bien->save();
+        }
+
+        return response()->json($bien, 200);
+    }
+>>>>>>> 7a929f142c0fa72b7766e2ace77cb68096b6e904
 }
