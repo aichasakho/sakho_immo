@@ -86,4 +86,37 @@ class BienController extends Controller
         }
     }
 
+
+
+    public function appeler(Request $request, Bien $bien)
+    {
+        // Récupérer les informations nécessaires (agent, coordonnées de l'utilisateur, etc.)
+        $agent = $bien->agent;
+        $utilisateur = [
+            'nom' => $request->input('nom'),
+            'email' => $request->input('email'),
+            'telephone' => $request->input('telephone')
+        ];
+
+        // Envoyer un email à l'agent
+        Mail::to($agent->email)->send(new AppelBien($bien, $utilisateur));
+
+        return response()->json(['message' => 'Demande d\'appel envoyée avec succès']);}
+
+    public function contacter(Request $request, Bien $bien)
+    {
+
+        // Créer un nouvel enregistrement de contact
+        $contact = Contact::create([
+            'bien_id' => $bien->id,
+            'nom' => $request->input('nom'),
+            'email' => $request->input('email'),
+            'telephone' => $request->input('telephone'),
+            'message' => $request->input('message')
+        ]);
+
+        return response()->json(['message' => 'Demande de contact envoyée avec succès']);}
+
+
+
 }

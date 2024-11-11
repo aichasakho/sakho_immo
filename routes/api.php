@@ -32,3 +32,7 @@ Route::post('utilisateur/{id}/debloquer', [UserController::class, 'debloquer']);
 
 //Reservation
 Route::post('reservations', [ReservationController::class, 'store']);
+
+//contact
+Route::post('/biens/{bien}/appeler', 'BienController@appeler')->name('biens.appeler');
+Route::post('/biens/{bien}/contacter', 'BienController@contacter')->name('biens.contacter');
