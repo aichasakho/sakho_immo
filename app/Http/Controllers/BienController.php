@@ -45,7 +45,7 @@ class BienController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'titre' => 'required|string|max:255',
+            'titre' => 'nullable|string|max:255',
             'description' => 'required|string',
             'prix' => 'required|numeric',
             'disponible' => 'boolean',
