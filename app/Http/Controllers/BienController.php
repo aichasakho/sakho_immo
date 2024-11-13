@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Bien;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AppelBien; 
+use App\Models\Contact;
 
 class BienController extends Controller
 {
@@ -42,33 +45,39 @@ class BienController extends Controller
     public function update(Request $request, $id)
     {
         $bien = Bien::find($id);
-        if (!$bien) {
-            return response()->json(['message' => 'Bien non trouvé'], 404);
-        }
+    if (!$bien) {
+        return response()->json(['message' => 'Bien non trouvé'], 404);
+    }
 
-        $request->validate([
-            'titre' => 'required|string',
-            'description' => 'required|string',
-            'prix' => 'required|numeric',
-            'type' => 'required|string',
-            'imagePath' => 'nullable|image',
-        ]);
+    dd($request->all()); 
+
+    $request->validate([
+        'titre' => 'required|string',
+        'description' => 'required|string',
+        'prix' => 'required|numeric',
+        'type' => 'required|string',
+        'imagePath' => 'nullable|image',
+    ]);
 
         $bien->titre = $request->input('titre');
         $bien->description = $request->input('description');
         $bien->prix = $request->input('prix');
-        $bien->disponible = $request->input('disponible', false);
         $bien->type = $request->input('type');
+        $bien->disponible = $request->input('disponible', false);
 
         if ($request->hasFile('imagePath')) {
-            $imagePath = $request->file('imagePath')->store('images');
-            $bien->imagePath = $imagePath;
+            if ($bien->imagePath) {
+                \Storage::delete('public/' . $bien->imagePath);
+            }
+            $bien->imagePath = $request->file('imagePath')->store('images', 'public');
         }
 
         $bien->save();
 
-        return response()->json($bien, 200);
+        return response()->json(['message' => 'Bien mis à jour avec succès'], 200);
     }
+
+
 
 
     public function destroy($id)
