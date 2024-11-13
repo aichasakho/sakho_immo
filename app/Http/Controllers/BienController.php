@@ -31,12 +31,9 @@ class BienController extends Controller
             $data['imagePath'] = $request->file('imagePath')->store('images', 'public');
         }
 
-        // Créer le bien
         $bien = Bien::create($data);
         return response()->json($bien, 201);
     }
-
-
 
     public function show(Bien $bien) {
         return $bien;
@@ -44,37 +41,36 @@ class BienController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'titre' => 'nullable|string|max:255',
-            'description' => 'required|string',
-            'prix' => 'required|numeric',
-            'disponible' => 'boolean',
-            'type' => 'required|string|in:appartement,studio,magasin,terrain,maison',
-            'imagePath' => 'nullable|image|mimes:jpeg,png,jpg,gif',
-        ]);
-
         $bien = Bien::find($id);
         if (!$bien) {
             return response()->json(['message' => 'Bien non trouvé'], 404);
         }
 
+        $request->validate([
+            'titre' => 'required|string',
+            'description' => 'required|string',
+            'prix' => 'required|numeric',
+            'type' => 'required|string',
+            'imagePath' => 'nullable|image',
+        ]);
+
         $bien->titre = $request->input('titre');
         $bien->description = $request->input('description');
         $bien->prix = $request->input('prix');
-        $bien->disponible = $request->input('disponible') == '1';
+        $bien->disponible = $request->input('disponible', false);
         $bien->type = $request->input('type');
 
-        // Gestion de l'image
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $path = $file->store('images', 'public');
-            $bien->imagePath = $path; // Mettez à jour le chemin de l'image
+        if ($request->hasFile('imagePath')) {
+            $imagePath = $request->file('imagePath')->store('images');
+            $bien->imagePath = $imagePath;
         }
 
         $bien->save();
 
         return response()->json($bien, 200);
     }
+
+
     public function destroy($id)
     {
         $bien = Bien::find($id);

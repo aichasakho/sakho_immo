@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('biens', function (Blueprint $table) {
             $table->id();
-            $table->string('imagePath')->nullable(); // Modifiez pour correspondre à l'utilisation dans le contrôleur
-
+            $table->string('imagePath')->nullable();
             $table->string('titre');
             $table->text('description');
             $table->decimal('prix', 10, 2);
             $table->boolean('disponible')->default(true);
-            $table->string('type')->default('appartement'); // Exemple de valeur par défaut
+            $table->string('type')->default('appartement'); 
 
             $table->timestamps();
         });
