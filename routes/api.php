@@ -20,13 +20,21 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+// Les routes d'authentification
+Route::post('login', [\App\Http\Controllers\Api\UserController::class, 'login']);
+Route::post('logout', [\App\Http\Controllers\Api\UserController::class, 'logout']);
+
 //Biens
 Route::apiResource('biens', BienController::class);
 Route::post('/biens', [BienController::class, 'store']);
 Route::put('/biens/{id}', [BienController::class, 'update']);
 Route::delete('/biens/{id}', [BienController::class, 'destroy']);
 
-//User
+// Rooutes for users
+Route::get('users', [\App\Http\Controllers\UserController::class, 'index']);
+Route::get('users/{id}', [\App\Http\Controllers\UserController::class, 'show']);
+Route::put('users/{id}', [\App\Http\Controllers\UserController::class, 'update']);
+Route::delete('users/{id}', [\App\Http\Controllers\UserController::class, 'delete']);
 Route::post('utilisateur/{id}/bloquer', [UserController::class, 'bloquer']);
 Route::post('utilisateur/{id}/debloquer', [UserController::class, 'debloquer']);
 

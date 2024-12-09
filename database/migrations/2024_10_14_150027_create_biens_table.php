@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('description');
             $table->decimal('prix', 10, 2);
             $table->boolean('disponible')->default(true);
-            $table->string('type')->default('appartement'); // Exemple de valeur par défaut
+            $table->string('type')->default(''); // Exemple de valeur par défaut
 
             $table->timestamps();
         });
