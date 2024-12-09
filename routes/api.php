@@ -26,8 +26,8 @@ Route::post('logout', [\App\Http\Controllers\Api\UserController::class, 'logout'
 
 //Biens
 Route::apiResource('biens', BienController::class);
-Route::post('/biens', [BienController::class, 'store']);
 Route::put('/biens/{id}', [BienController::class, 'update']);
+Route::post('/biens', [BienController::class, 'store']);
 Route::delete('/biens/{id}', [BienController::class, 'destroy']);
 
 // Rooutes for users
@@ -42,5 +42,5 @@ Route::post('utilisateur/{id}/debloquer', [UserController::class, 'debloquer']);
 Route::post('reservations', [ReservationController::class, 'store']);
 
 //contact
-Route::post('/biens/{bien}/appeler', 'BienController@appeler')->name('biens.appeler');
-Route::post('/biens/{bien}/contacter', 'BienController@contacter')->name('biens.contacter');
+Route::post('/biens/{bien}/appeler', [BienController::class, 'appeler'])->name('biens.appeler');
+Route::post('/biens/{bien}/contacter', [BienController::class, 'contacter'])->name('biens.contacter');
